@@ -10,5 +10,4 @@ module Bb2md
       text
     end
   end
-
 end

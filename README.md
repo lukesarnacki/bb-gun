@@ -19,7 +19,7 @@ Or install it yourself as:
 
 ## Usage
 
-Rendering is done by ```Bb2md``` class. Initializer takes options as hash
+Rendering is done by ```Bb2md::Converter``` class. Initializer takes options as hash
 as argument.
 
 ```ruby
