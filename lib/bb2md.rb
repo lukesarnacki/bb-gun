@@ -1,4 +1,6 @@
 require "bb2md/version"
+require "bb2md/node"
+require "bb2md/ast"
 
 module Bb2md
 
@@ -10,5 +12,4 @@ module Bb2md
       text
     end
   end
-
 end
