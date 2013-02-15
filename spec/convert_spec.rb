@@ -11,7 +11,6 @@ describe BbGun::Converter do
   end
 
   describe "#to_markdown" do
-
     it "keeps plain text untouched" do
       described_class.new("Some text").to_markdown.should == "Some text"
     end
@@ -77,7 +76,5 @@ describe BbGun::Converter do
     it "is not case sensitive" do
       described_class.new("[b]Bold\n\n[I]Italic\n\n New Line[/i][/B]").to_markdown.should == "**Bold**\n\n***Italic***\n\n***New Line***"
     end
-
   end
-
 end
