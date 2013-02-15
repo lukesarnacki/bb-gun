@@ -1,6 +1,6 @@
-require "bb2md/version"
+require "bb_gun/version"
 
-module Bb2md
+module BbGun
 
   class Converter
     def initialize(options = {})
