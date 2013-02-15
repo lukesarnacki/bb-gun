@@ -1,4 +1,6 @@
 require "bb_gun/version"
+require "bb_gun/node"
+require "bb_gun/ast"
 
 module BbGun
 
