@@ -1,6 +1,6 @@
-# Bb2md
+# BB Gun
 
-Bb2md simply converts BBcode to Markdown.
+BB Gun simply converts BB code to Markdown.
 
 
 ## Installation
@@ -19,11 +19,11 @@ Or install it yourself as:
 
 ## Usage
 
-Rendering is done by ```Bb2md::Converter``` class. Initializer takes options as hash
+Rendering is done by ```BbGun::Converter``` class. Initializer takes options as hash
 as argument.
 
 ```ruby
-converter = Bb2md::Converter.new(options = {})
+converter = BbGun::Converter.new(options = {})
 ```
 
 Available options are:
@@ -32,7 +32,7 @@ Available options are:
 :todo - maybe it will be something here ;)
 ```
 
-To convert content use ```Bb2md::Converter#convert``` method.
+To convert content use ```BbGun::Converter#convert``` method.
 
 ```ruby
 converter.convert("Some [b]strong[/b] words")
