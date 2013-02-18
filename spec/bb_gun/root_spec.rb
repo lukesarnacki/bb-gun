@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 module BbGun
-  describe Ast do
-    it "yupi" do
-    end
+  describe Root do
+
   end
 end
+

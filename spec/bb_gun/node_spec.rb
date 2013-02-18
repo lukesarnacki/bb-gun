@@ -2,17 +2,20 @@ require 'spec_helper'
 
 module BbGun
   describe Node do
-    it "has type" do
-      node = Node.new(type: 'text')
-      node.type.should == 'text'
+    it "has content Text, Tag or Root content" do
+      node = Node.new(Tag.new('url')).content.should be_a(Tag)
+      node = Node.new(Text.new('Text')).content.should be_a(Text)
+      node = Node.new(Root.new).content.should be_a(Root)
+    end
 
-      #n = Node.new(content: "Some url", tag: "url",
-                   #value: "http://google.pl", type: "tag")
+    it "raises exception if content is not Tag, Text or Root" do
+      lambda { Node.new('just checking') }.should raise_error(
+        ArgumentError, "Content can be Tag or Text type only."
+      )
+    end
 
-      #n.content.should == "Some url"
-      #n.tag.should == "url"
-      #n.value.should == "http://google.pl"
-      #n.type.should == "tag"
+    it "has children" do
+      Node.new(Root.new).children.should == []
     end
   end
 end
