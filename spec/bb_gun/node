@@ -1,0 +1,10 @@
+require 'spec_helper'
+
+module BbGun
+  module Node
+    describe Root do
+
+    end
+  end
+end
+
