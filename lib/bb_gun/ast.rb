@@ -31,15 +31,21 @@
 
 TAGS = %w(b u i color url email img quote code)
 
+class Array
+  def select_indice(&p)
+    map.with_index{|x, i| i if p.call(x)}.compact
+  end
+end
+
 module BbGun
   class Ast
 
     # Public: text to process.
     attr_reader :text
 
+    # Public: Array with parts of text (tags' openings,
+    # endings and text parts)
     attr_reader :text_elements
-    attr_accessor :current_element
-    attr_accessor :text_left
 
     # Public: Root Node.
     attr_reader :root
@@ -50,66 +56,18 @@ module BbGun
     attr_reader :text_length
 
     def initialize(text)
-      @text = @text_left = text
-      @text_elements = []
-      @current_element = ""
-      @text_length = text.length
+      @text = text
     end
 
     def build
       create_root
-      create_nodes
       self
     end
 
-    def append_to_current_element(length = 1)
-      self.current_element << text_left[0..(length - 1)]
-      self.text_left = text_left[length..text_left.length - 1]
-    end
-
-    def add_current_element
-      self.text_elements << current_element.dup
-    end
-
-    def next_element
-      add_current_element
-      self.current_element = ""
-    end
-
-    def first_tag
-      text_left.scan(/^\[([\w=\/]+.*?)\]/).flatten.first
-    end
-
-    def process_tag
-      unless first_tag.nil?
-        next_element
-        append_to_current_element(first_tag.length + 2)
-        next_element
-      else
-        append_to_current_element
-      end
-    end
-
-    def first_character
-      text_left[0]
-    end
-
-    def process_text
-      case first_character
-      when "["
-        process_tag
-      else
-        append_to_current_element
-      end
-      extract_text_elements
-    end
-
     def extract_text_elements
-      unless text_left.nil?
-        process_text
-      else
-        add_current_element
-      end
+      @text_elements = text.split(/(\[[\w=\/]+.*?\])/)
+      join_between_code_text_elements
+      text_elements
     end
 
     def add_text_node(val)
@@ -117,6 +75,15 @@ module BbGun
     end
 
     private
+
+    def join_between_code_text_elements
+      code_indexes = text_elements.select_indice {|t| t =~ /\[[\/]*code[=]*.*?\]/ }
+      code_indexes.each_slice(2) do |s|
+        first = s.first + 1
+        last = s.last - 1
+        @text_elements[first..last] = text_elements[first..last].join
+      end
+    end
 
     def create_root
       @root = @current = Node.new(Root.new)

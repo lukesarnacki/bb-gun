@@ -12,6 +12,16 @@ module BbGun
       text.content.should == "Some text"
     end
 
+
+
+    it "treats everything between code tag as text" do
+      text = "Something [code=ruby] nasty [b] //a[a=trolololo:?][b]][/code]"
+      ast = Ast.new(text)
+      ast.extract_text_elements.should == [
+        "Something ", "[code=ruby]", " nasty [b] //a[a=trolololo:?][b]]", "[/code]"
+      ]
+    end
+
     context "on complicated text" do
 
       before do
@@ -33,21 +43,25 @@ module BbGun
         ]
       end
 
-
       it "creates tree from text with BB code tags" do
         ast = Ast.new(@text).build
 
         nodes = ast.root.children
         nodes.count.should == 2
+
         node = nodes.first
         node.content.should be_a(Text)
         node.content.content.should == "Some text"
 
-        node = nodes.last
+        node = nodes[1]
         node.content.should be_a(Tag)
         node.content.name.should == 'b'
 
         b_children = node.children
+
+        node = nodes.last
+        node.content.should be_a(Text)
+        node.content.content.should == "..."
 
         node = b_children.first
         node.content.should be_a(Text)
@@ -61,7 +75,7 @@ module BbGun
 
         node = b_children.last
         node.content.should be_a(Text)
-        node.content.content.should == " harder"
+        node.content.content.should == " harder with [ distraction"
 
         node = i_children.first
         node.content.should be_a(Text)
